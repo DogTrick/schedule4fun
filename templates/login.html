@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .title-intro {
+            text-align: center;
+        }
+        .form-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title-intro">
+        登入吧！進來啊！
+    </h1>
+    <div class="form-container">
+        <form action="/check" method="post">
+            <p>用戶名
+                <input type="text" name="user_name" id="user_name">
+            </p>
+            <p>密碼 &nbsp; &nbsp;
+                <input type="text" name="password" id="password">
+            </p>
+            <input type="submit" value="登入">
+        </form>
+        <p>沒帳號？<a href="/sign_up"><input type="button" value="去註冊"></a></p>
+    </div>
+</body>
+</html>

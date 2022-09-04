@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .title-intro {
+            text-align: center;
+        }
+        .form-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .warn {
+            position: absolute;
+            left: 50%;
+            top: 70%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title-intro">加入吧騷年！</h1>
+    <div class="form-container">
+        <p>用戶名
+            <input type="text" name="user_name" id="user_name">
+        </p>
+        <p>密碼 &nbsp; &nbsp;
+            <input type="text" name="password" id="password">
+        </p>
+        <input type="submit" value="創建" id="submit"><br>
+        <p><a href="{{ url_for('login') }}"><input type="button" value="已是用戶"></a></p>
+    </div>
+    <div class="warn"></div>
+    <script>
+        let btn = document.querySelector("#submit");
+        btn.addEventListener("click", function () {
+            let user_name = document.querySelector("#user_name").value;
+            let password = document.querySelector("#password").value;
+            fetch("/create_account", {
+                method: "POST",
+                body: JSON.stringify({ user_name, password })
+            })
+            .then(response => response.json())
+            .then(response => {
+                let warn = document.querySelector(".warn");
+                warn.innerHTML = response;
+            });
+        })
+    </script>
+</body>
+</html>

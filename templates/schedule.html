@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .title-intro {
+            text-align: center;
+        }
+        .schedule-container {
+            position: absolute;
+            left: 95%;
+            transform: translate(-95%);
+            top: 8%;
+            width: 650px;
+            height: 500px;
+            overflow-y: auto;
+            font-size: 24px;
+        }
+        .form-container {
+            position: absolute;
+            left: 5%;
+            top: 5%; 
+            transform: translate(-5%);
+        }
+        #logout {
+            position: absolute;
+            right: 2%;
+            top: 2%;
+        }
+        .nothing {
+            position: absolute;
+            left: 35%;
+        }
+    </style>
+</head>
+<body>
+    <div class="schedule-container">
+        {% if schedules %}
+        {% for schedule in schedules %}
+            <div id="schedule{{ (schedule.id) }}">
+                <input type="button" class="delete" value="刪" id="{{ schedule.id }}">
+                {{ schedule.user_name }} | {{ schedule.title }} | {{ schedule.datetime.strftime("%Y-%m-%d %H:%M:%S") }}
+                <br>{{ schedule.content }} 
+                <br><br>
+            </div>
+        {% endfor %}
+        {% else %}
+        <h1 class="nothing">目前啥都沒！</h1>
+        {% endif %}
+    </div><br><br><br>
+    <div class="form-container">
+        <form action="/write_schedule" method="post">
+        <p>標題</p>
+        <input type="text" name="title" id="title">
+        <p>內文</p>
+        <textarea name="content" id="content" cols="40" rows="8"></textarea><br><br>
+        <input type="submit" value="呈交">
+    </form>
+    </div>
+    <a href="{{ url_for('login') }}"><input type="button" id="logout" value="登出"></a>
+    <script>
+        let dbtns = document.querySelectorAll(".delete");
+        dbtns.forEach(function(x) {
+            x.addEventListener("click", function() {
+                fetch("/del_schedule", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        id: x.id,
+                    })
+                })
+                .then(response => response.json())
+                .then(response => {
+                    if (response == "match") {
+                        document.querySelector("div#schedule" + x.id).remove();
+                    } else {
+                        alert("還敢刪別人的啊！")
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+</html>
